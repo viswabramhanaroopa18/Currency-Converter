@@ -1,0 +1,45 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class CurrencyConverter {
+    private static final Map<String, Double> exchangeRates = new HashMap<>();
+
+    static {
+        // Example exchange rates
+        exchangeRates.put("USD", 1.0); // Base currency
+        exchangeRates.put("EUR", 0.85);
+        exchangeRates.put("JPY", 110.0);
+        exchangeRates.put("GBP", 0.75);
+    }
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Welcome to the Currency Converter!");
+        System.out.println("Available currencies: " + exchangeRates.keySet());
+
+        System.out.print("Enter the currency you want to convert from (e.g., USD): ");
+        String fromCurrency = scanner.nextLine().toUpperCase();
+
+        System.out.print("Enter the currency you want to convert to (e.g., EUR): ");
+        String toCurrency = scanner.nextLine().toUpperCase();
+
+        if (!exchangeRates.containsKey(fromCurrency) || !exchangeRates.containsKey(toCurrency)) {
+            System.out.println("Invalid currency code. Please try again.");
+            return;
+        }
+
+        System.out.print("Enter the amount you want to convert: ");
+        double amount = scanner.nextDouble();
+
+        double convertedAmount = convertCurrency(amount, fromCurrency, toCurrency);
+        System.out.printf("%.2f %s is equal to %.2f %s%n", amount, fromCurrency, convertedAmount, toCurrency);
+    }
+
+    private static double convertCurrency(double amount, String fromCurrency, String toCurrency) {
+        double fromRate = exchangeRates.get(fromCurrency);
+        double toRate = exchangeRates.get(toCurrency);
+        return amount * (toRate / fromRate);
+    }
+}
